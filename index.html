@@ -3,475 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ギャル強め✨漢字爆アゲ単語帳</title>
-    <!-- ホーム画面追加時のアプリ化設定 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ギャル漢字">
-    
-    <!-- アイコン用のSVGデータをセット（ホーム画面追加時にこのデザインになります） -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ff007f'/><stop offset='50%' stop-color='%237000ff'/><stop offset='100%' stop-color='%2300f0ff'/></linearGradient><filter id='glow'><feGaussianBlur stdDeviation='15' result='coloredBlur'/><feMerge><feMergeNode in='coloredBlur'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><rect width='512' height='512' rx='100' fill='url(%23g)'/><circle cx='100' cy='120' r='8' fill='%23fff' filter='url(%23glow)'/><circle cx='420' cy='380' r='6' fill='%23fff' filter='url(%23glow)'/><circle cx='400' cy='100' r='12' fill='%23fff' filter='url(%23glow)'/><path d='M256,120 C300,50 440,70 440,210 C440,330 256,450 256,450 C256,450 72,330 72,210 C72,70 212,50 256,120 Z' fill='%23ffffff' filter='url(%23glow)'/><text x='256' y='290' font-family='Arial, sans-serif' font-size='110' font-weight='bold' fill='%23ff007f' text-anchor='middle'>𪚥</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ff007f'/><stop offset='50%' stop-color='%237000ff'/><stop offset='100%' stop-color='%2300f0ff'/></linearGradient><filter id='glow'><feGaussianBlur stdDeviation='15' result='coloredBlur'/><feMerge><feMergeNode in='coloredBlur'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><rect width='512' height='512' rx='100' fill='url(%23g)'/><circle cx='100' cy='120' r='8' fill='%23fff' filter='url(%23glow)'/><circle cx='420' cy='380' r='6' fill='%23fff' filter='url(%23glow)'/><circle cx='400' cy='100' r='12' fill='%23fff' filter='url(%23glow)'/><path d='M256,120 C300,50 440,70 440,210 C440,330 256,450 256,450 C256,450 72,330 72,210 C72,70 212,50 256,120 Z' fill='%23ffffff' filter='url(%23glow)'/><text x='256' y='290' font-family='Arial, sans-serif' font-size='110' font-weight='bold' fill='%23ff007f' text-anchor='middle'>𪚥</text></svg>">
-
+    <title>漢字爆アゲ単語帳</title>
     <style>
         :root {
-            --pink: #ff007f;
-            --black: #1a1a1a;
-            --dark-gray: #2d2d2d;
-            --neon-blue: #00f0ff;
-            --white: #ffffff;
-            --purple: #7000ff;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #ff007f;
+            --secondary: #00f0ff;
+            --text: #ffffff;
+            --text-muted: #aaaaaa;
         }
-
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--black);
-            color: var(--white);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .phone-container {
-            width: 100%;
-            max-width: 390px;
-            height: 720px;
-            background-color: var(--black);
-            border: 4px solid var(--pink);
-            border-radius: 30px;
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* アプリ用激カワネオンヘッダー */
-        .app-header {
-            background: linear-gradient(135deg, var(--black), var(--dark-gray));
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 3px solid var(--pink);
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
-        }
-
-        /* ギャル風アプリアイコン（ミニ版） */
-        .app-logo-svg {
-            width: 65px;
-            height: 65px;
-            filter: drop-shadow(0 0 8px var(--pink));
-            margin-bottom: 5px;
-        }
-
-        .header-title {
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--white);
-            text-shadow: 0 0 8px var(--pink), 0 0 15px var(--purple);
-            letter-spacing: 2px;
-        }
-
-        .content {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .screen {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .screen.active {
-            display: flex;
-        }
-
-        /* Home Screen */
-        .welcome-text {
-            text-align: center;
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            color: var(--neon-blue);
-            font-weight: bold;
-            text-shadow: 0 0 5px rgba(0, 240, 255, 0.4);
-            line-height: 1.4;
-        }
-
-        .menu-btn {
-            background: linear-gradient(45deg, var(--pink), #ff66b2);
-            color: white;
-            border: none;
-            padding: 16px;
-            margin-bottom: 15px;
-            border-radius: 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
-            transition: transform 0.1s;
-        }
-
-        .menu-btn:active {
-            transform: scale(0.95);
-        }
-
-        .menu-btn.blue {
-            background: linear-gradient(45deg, var(--neon-blue), #66f5ff);
-            color: var(--black);
-            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4);
-        }
-
-        .stats {
-            background: linear-gradient(to right, rgba(255,0,127,0.1), rgba(0,240,255,0.1));
-            padding: 15px;
-            border-radius: 20px;
-            margin-top: auto;
-            text-align: center;
-            border: 2px solid var(--dark-gray);
-        }
-
-        /* Quiz Screen */
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            color: var(--neon-blue);
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .word-box {
-            background-color: var(--dark-gray);
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-        }
-
-        .option-btn {
-            background-color: var(--dark-gray);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            margin-bottom: 12px;
-            border-radius: 15px;
-            font-size: 1.05rem;
-            text-align: left;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .option-btn:active {
-            background-color: #444;
-        }
-
-        /* Feedback Layer */
-        .feedback {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 25px;
-            box-sizing: border-box;
-            z-index: 10;
-        }
-
-        .feedback-title {
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .feedback-title.correct { color: var(--pink); text-shadow: 0 0 10px var(--pink); }
-        .feedback-title.wrong { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
-
-        .explanation {
-            background-color: var(--dark-gray);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            width: 100%;
-            box-sizing: border-box;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Wordbook Screen */
-        .word-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .word-item {
-            background-color: var(--dark-gray);
-            padding: 15px;
-            border-radius: 15px;
-            border-left: 5px solid var(--pink);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        .word-item-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--pink);
-            margin-bottom: 6px;
-        }
-
-        .back-btn {
-            background-color: transparent;
-            color: white;
-            border: 1px solid white;
-            padding: 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            margin-top: 15px;
-            font-weight: bold;
-            transition: opacity 0.2s;
-        }
-
-        .back-btn:active {
-            opacity: 0.7;
-        }
-
-        .empty-msg {
-            text-align: center;
-            color: #888;
-            margin-top: 60px;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background-color: var(--card-bg); width: 100%; max-width: 400px; border-radius: 30px; border: 4px solid var(--primary); box-shadow: 0 0 20px var(--primary); padding: 25px; min-height: 600px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .app-icon { font-size: 55px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px var(--primary)); margin-bottom: 5px; display: inline-block; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        .title { font-size: 24px; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary); letter-spacing: 1px; }
+        .welcome-msg { text-align: center; font-size: 18px; font-weight: bold; color: var(--secondary); text-shadow: 0 0 8px rgba(0,240,255,0.5); margin-bottom: 30px; line-height: 1.5; }
+        .menu-btn { display: block; width: 100%; padding: 16px; margin-bottom: 15px; border: none; border-radius: 20px; font-size: 18px; font-weight: bold; color: #fff; cursor: pointer; transition: all 0.2s; text-align: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .btn-main { background: linear-gradient(90deg, #ff007f, #ff66b2); box-shadow: 0 0 15px rgba(255,0,127,0.4); }
+        .btn-main:active { transform: scale(0.97); filter: brightness(1.1); }
+        .btn-sub { background: linear-gradient(90deg, #00f0ff, #70f5ff); color: #000; box-shadow: 0 0 15px rgba(0,240,255,0.3); }
+        .btn-sub:active { transform: scale(0.97); filter: brightness(1.1); }
+        .btn-dark { background: #2a2a2a; color: #eee; border: 1px solid #444; }
+        .btn-dark:active { background: #333; }
+        .stats { margin-top: auto; text-align: center; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; font-size: 14px; font-weight: bold; color: var(--text-muted); }
+        .stats span { color: var(--primary); font-size: 18px; text-shadow: 0 0 5px var(--primary); }
+        .screen { display: none; flex-direction: column; height: 100%; flex-grow: 1; }
+        .screen.active { display: flex; }
+        .back-btn { position: absolute; top: 20px; left: 20px; background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+        .quiz-box { background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; border: 1px solid #333; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; min-height: 200px; }
+        .question-kanji { font-size: 55px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.3); margin-bottom: 10px; }
+        .question-context { font-size: 14px; color: var(--text-muted); margin-bottom: 5px; }
+        .input-area { margin-bottom: 20px; }
+        .kana-input { width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #444; background: #252525; color: #fff; font-size: 20px; text-align: center; font-weight: bold; }
+        .kana-input:focus { border-color: var(--secondary); outline: none; box-shadow: 0 0 10px rgba(0,240,255,0.3); }
+        .result-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); border-radius: 26px; justify-content: center; align-items: center; flex-direction: column; z-index: 10; text-align: center; padding: 20px; }
+        .result-mark { font-size: 80px; font-weight: 900; margin-bottom: 10px; animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        .result-mark.correct { color: var(--secondary); text-shadow: 0 0 20px var(--secondary); }
+        .result-mark.wrong { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        .result-details { font-size: 18px; margin-bottom: 30px; line-height: 1.6; }
+        .result-details span { font-size: 24px; font-weight: bold; color: #fff; }
+        .list-container { flex-grow: 1; overflow-y: auto; max-height: 400px; padding-right: 5px; margin-bottom: 15px; }
+        .list-item { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 15px; margin-bottom: 10px; border-left: 4px solid #444; display: flex; justify-content: space-between; align-items: center; }
+        .list-item.has-wrong { border-left-color: var(--primary); background: linear-gradient(90deg, rgba(255,0,127,0.05), transparent); }
+        .list-kanji { font-size: 24px; font-weight: bold; }
+        .list-reading { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+        .list-wrong-count { background: rgba(255,0,127,0.2); color: #ff66b2; padding: 4px 10px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+        .empty-msg { text-align: center; color: var(--text-muted); margin-top: 40px; font-style: italic; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-<div class="phone-container">
-    <!-- 激カワネオンヘッダー ＆ アイコンロゴ -->
-    <div class="app-header">
-        <svg class="app-logo-svg" viewBox="0 0 512 512">
-            <defs>
-                <linearGradient id='logo-g' x1='0%' y1='0%' x2='100%' y2='100%'>
-                    <stop offset='0%' stop-color='#ff007f'/>
-                    <stop offset='50%' stop-color='#7000ff'/>
-                    <stop offset='100%' stop-color='#00f0ff'/>
-                </linearGradient>
-                <filter id='logo-glow'>
-                    <feGaussianBlur stdDeviation='10' result='blur'/>
-                    <feMerge>
-                        <feMergeNode in='blur'/>
-                        <feMergeNode in='SourceGraphic'/>
-                    </feMerge>
-                </filter>
-            </defs>
-            <!-- 背景ネオン -->
-            <rect width='512' height='512' rx='100' fill='url(#logo-g)'/>
-            <!-- キラキラ星 -->
-            <circle cx='90' cy='120' r='10' fill='#fff' filter='url(#logo-glow)'/>
-            <circle cx='420' cy='390' r='8' fill='#fff' filter='url(#logo-glow)'/>
-            <circle cx='430' cy='100' r='14' fill='#fff' filter='url(#logo-glow)'/>
-            <!-- 白いハート -->
-            <path d='M256,120 C300,50 440,70 440,210 C440,330 256,450 256,450 C256,450 72,330 72,210 C72,70 212,50 256,120 Z' fill='#ffffff' filter='url(#logo-glow)'/>
-            <!-- ギャル文字の「漢字（𪚥）」 -->
-            <text x='256' y='295' font-family='Arial, sans-serif' font-size='125' font-weight='bold' fill='#ff007f' text-anchor='middle'>𪚥</text>
-        </svg>
-        <div class="header-title">漢字爆アゲ単語帳</div>
-    </div>
-    
-    <div class="content">
-        <!-- HOME SCREEN -->
-        <div id="home-screen" class="screen active">
-            <div class="welcome-text">あんにゃまる、おつ〜！🖤🩷<br>今日も漢字アゲてこ？✨</div>
-            <button class="menu-btn" onclick="startQuiz('normal')">ガチ勝負！通常クイズ</button>
-            <button class="menu-btn blue" onclick="startQuiz('revenge')">苦手克服🔥リベンジクイズ</button>
-            <button class="menu-btn" style="background: #333; box-shadow: none;" onclick="switchScreen('wordbook-screen')">ウチの単語帳を見る</button>
+    <div class="container">
+        <div id="screen-home" class="screen active">
+            <div class="header">
+                <div class="app-icon">💖</div>
+                <h1 class="title">漢字爆アゲ単語帳</h1>
+            </div>
             
+            <div class="welcome-msg">
+                あんにゃまる、おつ〜！🖤💗<br>今日も漢字アゲてこ？✨
+            </div>
+
+            <button class="menu-btn btn-main" onclick="startQuiz('normal')">ガチ勝負！通常クイズ</button>
+            <button class="menu-btn btn-sub" onclick="startQuiz('revenge')">苦手克服🔥リベンジクイズ</button>
+            <button class="menu-btn btn-dark" onclick="showListScreen()">ウチの単語帳を見る</button>
+
             <div class="stats">
-                単語帳の登録数: <span id="wordbook-count" style="color: var(--pink); font-weight: bold; font-size: 1.2rem;">0</span> 語
+                単語帳の登録数: <span id="home-total-count">0</span> 語
             </div>
         </div>
 
-        <!-- QUIZ SCREEN -->
-        <div id="quiz-screen" class="screen">
-            <div class="quiz-header">
-                <span id="quiz-type-label">通常モード</span>
-                <span id="progress-label">1/5</span>
+        <div id="screen-quiz" class="screen">
+            <button class="back-btn" onclick="goHome()">🏃‍♀️</button>
+            <div class="header" style="margin-bottom: 10px;">
+                <h2 class="title" id="quiz-title" style="font-size: 18px;">通常モード</h2>
             </div>
-            <div class="word-box" id="quiz-kanji">重複</div>
-            <div id="options-container" style="display: flex; flex-direction: column;"></div>
-            <button class="back-btn" onclick="switchScreen('home-screen')">ホームに戻る</button>
-        </div>
-
-        <!-- WORDBOOK SCREEN -->
-        <div id="wordbook-screen" class="screen">
-            <div class="welcome-text" style="font-size: 1.1rem; color: var(--pink);">間違えて伸びしろしかない漢字たち💅</div>
-            <div id="word-list-container" class="word-list"></div>
-            <button class="back-btn" onclick="switchScreen('home-screen')">ホームに戻る</button>
-        </div>
-    </div>
-
-    <!-- FEEDBACK LAYER -->
-    <div id="feedback-layer" class="feedback">
-        <div id="feedback-status" class="feedback-title">それな！大正解✨</div>
-        <div class="explanation">
-            <p><strong>読み：</strong> <span id="fb-reading">ちょうふく</span></p>
-            <p><strong>意味：</strong> <span id="fb-meaning">同じことがかさなること！</span></p>
-            <p><strong>ギャル的使い方：</strong><br><span id="fb-usage">「予定重複してマジ詰んだわ」</span></p>
-        </div>
-        <button class="menu-btn" style="width: 100%;" onclick="nextQuestion()">次いってみよー！</button>
-    </div>
-</div>
-
-<script>
-    const allQuestions = [
-        { kanji: "凡例", correct: "はんれい", options: ["はんれい", "ぼんれい", "ばんれい", "ほんれい"], meaning: "説明リストのこと！「このマークはこういう意味だよ〜」ってやつ。", usage: "「グラフの凡例見ないと色の意味わかんなくね？」" },
-        { kanji: "重複", correct: "ちょうふく", options: ["ちょうふく", "じゅうふく", "かさね", "ちょうぷく"], meaning: "同じものが重なっちゃうこと！じゅうふくでも通じるけど、ちょうふくが本来の正解！", usage: "「シフト重複しててマジうけるんだけど」" },
-        { kanji: "相殺", correct: "そうさい", options: ["そうさい", "そうさつ", "あいさつ", "しょうさい"], meaning: "お互いにプラスマイナスして帳消し（ゼロ）にすること！", usage: "「ランチ奢ってもらったから、さっきのジュース代と相殺ね！」" },
-        { kanji: "月極", correct: "つきぎめ", options: ["つきぎめ", "げっきょく", "げつきわ", "つききょく"], meaning: "月ごとに約束を決めること！駐車場の看板によくあるやつ。", usage: "「ここの月極駐車場、ウチのPixel 9aのカメラでズームしたら見えた！」" },
-        { kanji: "一宿一飯", correct: "いっしゅくいっぱん", options: ["いっしゅくいっぱん", "いっしゅくいはん", "ひとやどひめし", "いちやどいちめし"], meaning: "ちょっとした恩義やお世話になったこと！実際に泊まってなくても使ってOK！", usage: "「一宿一飯の恩があるから、今日のポテトはウチが奢るわ」" },
-        { kanji: "脆弱", correct: "ぜいじゃく", options: ["ぜいじゃく", "きしゃく", "すいじゃく", "もろよわ"], meaning: "もろくて弱いこと！スマホの「セキュリティの穴」のことも脆弱性っていうよ。", usage: "「ウチのメンタル今日脆弱だから優しくして？」" }
-    ];
-
-    let wrongWords = [];
-    let currentQuizMode = 'normal';
-    let quizQueue = [];
-    let currentQuestionIndex = 0;
-
-    function switchScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-        document.getElementById('feedback-layer').style.display = 'none';
-        
-        if(screenId === 'home-screen') {
-            updateHomeStats();
-        } else if(screenId === 'wordbook-screen') {
-            renderWordbook();
-        }
-    }
-
-    function updateHomeStats() {
-        document.getElementById('wordbook-count').innerText = wrongWords.length;
-    }
-
-    function renderWordbook() {
-        const container = document.getElementById('word-list-container');
-        container.innerHTML = '';
-        
-        if (wrongWords.length === 0) {
-            container.innerHTML = '<div class="empty-msg">まだ単語帳はカラだよ！<br>クイズで間違えたらここに自動で入るよ✨</div>';
-            return;
-        }
-
-        wrongWords.forEach(index => {
-            const q = allQuestions[index];
-            const item = document.createElement('div');
-            item.className = 'word-item';
-            item.innerHTML = `
-                <div class="word-item-title">${q.kanji}（${q.correct}）</div>
-                <div style="font-size: 0.85rem; color: #ccc; margin-top: 5px;">
-                    <strong>意味：</strong>${q.meaning}<br>
-                    <strong>使い方：</strong>${q.usage}
+            
+            <div class="quiz-box">
+                <div id="quiz-loading" style="color: var(--text-muted);">読み込み中...</div>
+                <div id="quiz-content" style="display:none; width:100%;">
+                    <div class="question-context" id="q-context"></div>
+                    <div class="question-kanji" id="q-kanji"></div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom:15px;" id="q-hint"></div>
                 </div>
-            `;
-            container.appendChild(item);
-        });
-    }
+            </div>
 
-    function startQuiz(mode) {
-        currentQuizMode = mode;
-        currentQuestionIndex = 0;
-        
-        if (mode === 'normal') {
-            document.getElementById('quiz-type-label').innerText = '通常モード✨';
-            quizQueue = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 5);
-        } else {
-            document.getElementById('quiz-type-label').innerText = 'リベンジ 🔥';
-            if (wrongWords.length === 0) {
-                alert('まだ間違えた漢字がないよ！通常クイズをやってみてね🖤');
+            <div class="input-area">
+                <input type="text" id="answer-input" class="kana-input" placeholder="ひらがなで入力してね！" autocomplete="off">
+                <button class="menu-btn btn-main" style="margin-top: 15px; margin-bottom: 0;" onclick="checkAnswer()">これで勝負！</button>
+            </div>
+
+            <div id="result-overlay" class="result-overlay">
+                <div id="result-mark" class="result-mark"></div>
+                <div id="result-details" class="result-details"></div>
+                <button class="menu-btn btn-sub" style="width: 80%; margin-bottom: 0;" id="result-next-btn" onclick="nextQuestion()">次へすすむ👉</button>
+            </div>
+        </div>
+
+        <div id="screen-list" class="screen">
+            <button class="back-btn" onclick="goHome()">🏃‍♀️</button>
+            <div class="header">
+                <h2 class="title" style="font-size: 20px;">ウチの単語帳一覧</h2>
+            </div>
+            
+            <div class="list-container" id="list-container">
+                </div>
+            
+            <button class="menu-btn btn-dark" style="margin-bottom: 0;" onclick="clearStorageWithConfirm()">データを初期化する</button>
+        </div>
+    </div>
+
+    <script>
+        // クイズ用の漢字データ（全120問：生活・一般・ちょっと難読までギャル風例文付き）
+        const kanjiDataset = [
+            { k: "挨拶", r: "あいさつ", c: "先輩への〇〇はマジで基本中の基本！" },
+            { k: "絢爛", r: "けんらん", c: "推しの新衣装が豪華〇〇すぎて尊死。" },
+            { k: "憂鬱", r: "ゆううつ", c: "雨の日の前髪、マジで〇〇になるわー。" },
+            { k: "破天荒", r: "はてんこう", c: "あいつの遊び方、マジで〇〇すぎてウケる。" },
+            { k: "完璧", r: "かんぺき", c: "今日のメイク、〇〇すぎて自撮り止まらん！" },
+            { k: "成就", r: "じょうじゅ", c: "この恋、〇〇させるためにウチは変わる！" },
+            { k: "釈明", r: "しゃくめい", c: "浮気疑われて〇〇バタバタしてるのダサすぎ。" },
+            { k: "常連", r: "じょうれん", c: "あのカフェの〇〇になって店員さんと仲良くなりたい。" },
+            { k: "束縛", r: "そくばく", c: "多少の〇〇は可愛いけど、毎時間はマジ無理！" },
+            { k: "葛藤", r: "かっとう", c: "新作のコスメ買うかマジで〇〇中。" },
+            { k: "獰猛", r: "どうもう", c: "見た目はチワワなのに中身〇〇すぎてギャップ萌え。" },
+            { k: "横柄", r: "おうへい", c: "店員さんに〇〇な態度とる男、マジで冷める。" },
+            { k: "乾杯", r: "かんぱい", c: "とりま集まったから全員で〇〇しよー！" },
+            { k: "核心", r: "かくしん", c: "話の〇〇に迫った瞬間、あいつ急に黙って草。" },
+            { k: "暴露", r: "ばくろ", c: "裏垢で秘密を〇〇されててマジで修羅場。" },
+            { k: "看破", r: "かんぱ", c: "嘘ついてるの、ウチには全部〇〇されてるから。" },
+            { k: "一瞥", r: "いちべつ", c: "すれ違いざまに〇〇されて、イケメンすぎて固まった。" },
+            { k: "含蓄", r: "がんちく", c: "おばあちゃんの言葉、〇〇がありすぎて泣ける。" },
+            { k: "忖度", r: "そんたく", c: "大人の世界って〇〇ばっかりでマジだるそう。" },
+            { k: "露骨", r: "ろこつ", c: "嫌そうな顔〇〇に出しすぎでしょ、分かりやす！" },
+            { k: "安堵", r: "あんど", c: "LINEの返信きて、マジで〇〇したわー。" },
+            { k: "一蹴", r: "いっしゅう", c: "告白したのに秒で〇〇されてワロタ…泣いた。" },
+            { k: "横着", r: "おうちゃく", c: "〇〇してメイク落とさず寝たら肌荒れてオワタ。" },
+            { k: "感銘", r: "かんめい", c: "あの映画のギャルの生き方にマジで〇〇を受けた。" },
+            { k: "奇才", r: "きさい", c: "この服のデザイン考えた人、マジで〇〇でしょ。" },
+            { k: "危惧", r: "きぐ", c: "このままだと遅刻する未来しかなくて〇〇してる。" },
+            { k: "忌避", r: "きひ", c: "面倒な話し合いを〇〇し続けるの、マジよくない。" },
+            { k: "驚愕", r: "きょうがく", c: "元カレに新しい彼女できてて〇〇の事実。" },
+            { k: "傾倒", r: "けいとう", c: "最近あのインフルエンサーに〇〇しすぎてる。" },
+            { k: "激変", r: "げきへん", c: "垢抜け動画見たら、ビフォーアフター〇〇すぎて神。" },
+            { k: "嫌悪", r: "けんお", c: "満員電車のオジサンの匂い、マジで〇〇感ハンパない。" },
+            { k: "誤認", r: "ごにん", c: "違う人を友達だと思って〇〇して話しかけて気まずい。" },
+            { k: "刷新", r: "さっしん", c: "気分〇〇するために部屋の模様替えした！" },
+            { k: "暫定", r: "ざんてい", c: "ウチの中で今一番キてる曲、〇〇でこれ！" },
+            { k: "固執", r: "こしつ", c: "過去の男に〇〇するの、時間の無駄だしやめよ！" },
+            { k: "錯覚", r: "さっかく", c: "目が合っただけで両想いとか〇〇しちゃうじゃん。" },
+            { k: "至高", r: "しこう", c: "深夜に食べるラーメン、マジで〇〇の一杯。" },
+            { k: "誇張", r: "こちょう", c: "あいつの話、〇〇されすぎてて話半分で聞いてる。" },
+            { k: "至福", r: "しふく", c: "推しのチケ当選して、今が一番〇〇の時間。" },
+            { k: "失笑", r: "しっしょう", c: "言い訳が苦しすぎて、先生も思わず〇〇してた。" },
+            { k: "自調", r: "じちょう", c: "ちょっと調子のりすぎたから一旦〇〇するわ。" },
+            { k: "執念", r: "しゅうねん", c: "限定コスメを執念でゲットしたウチ、マジプロ。" },
+            { k: "終焉", r: "しゅうえん", c: "楽しかったGWも今日で〇〇を迎えるの無理。" },
+            { k: "遵守", r: "じゅんしゅ", c: "推し活のルールはちゃんと〇〇しなきゃね。" },
+            { k: "昇華", r: "しょうか", c: "失恋の悲しみを自分磨きに〇〇させる神ギャル。" },
+            { k: "焦燥", r: "しょうそう", c: "テスト前日なのに何もやってなくて〇〇感ヤバい。" },
+            { k: "掌握", r: "しょうあく", c: "あいつ、完全にクラスの空気を〇〇してるわ。" },
+            { k: "精鋭", r: "せいえい", c: "ウチのいつメン、マジで〇〇しかいなくて最強。" },
+            { k: "折衷", r: "せっちゅう", c: "和食も洋食も食べたいから〇〇案でファミレス！" },
+            { k: "善処", r: "ぜんしょ", c: "「気が向いたら〇〇するわ〜」は絶対やらないやつ。" },
+            { k: "相殺", r: "そうさい", c: "バイト代入ったけど、服買いすぎて〇〇された。" },
+            { k: "淘汰", r: "とうた", c: "流行りのアプリもどんどん〇〇されていくよね。" },
+            { k: "踏襲", r: "とうしゅう", c: "先輩たちの伝説のギャルメイクを〇〇する。" },
+            { k: "等閑", r: "なおざり", c: "勉強を〇〇にして遊んでたら、成績表死亡した。" },
+            { k: "捏造", r: "ねつぞう", c: "変な噂を〇〇されて、マジでキレそう。" },
+            { k: "打破", r: "だは", c: "このマンネリ気味な関係を〇〇したい！" },
+            { k: "特異", r: "とくい", c: "あの子のファッション、〇〇だけどセンス爆発してる。" },
+            { k: "突飛", r: "とっぴ", c: "いきなり「明日韓国いこ」とか〇〇な提案ワロタ。" },
+            { k: "拝聴", r: "はいちょう", c: "カリスマギャルのありがたいお話を〇〇する。" },
+            { k: "排除", r: "はいじょ", c: "ネガティブな言葉はウチの人生から〇〇する方向で！" },
+            { k: "背徳", r: "はいとく", c: "夜中のポテチ、〇〇感あるけどやめられん！" },
+            { k: "反芻", r: "はんすう", c: "推しに言われたセリフ、毎日〇〇して生きてる。" },
+            { k: "万能", r: "ばんのう", c: "このアイシャドウ、どの服にも合って〇〇すぎる。" },
+            { k: "不穏", r: "ふおん", c: "カップルの空気が〇〇すぎて、ソッコー退散した。" },
+            { k: "払拭", r: "ふっしょく", c: "今までの悪いイメージを〇〇するくらい垢抜ける！" },
+            { k: "不徳", r: "ふとく", c: "ウチの〇〇の致すところで、遅刻しました（建前）。" },
+            { k: "不遜", r: "ふそん", c: "態度が〇〇な後輩、ちょっとウケるから許す。" },
+            { k: "変貌", r: "へんぼう", c: "久しぶりに会った地元の友達がイケメンに〇〇してた。" },
+            { k: "奔放", r: "ほんぽう", c: "自由〇〇に生きるのがウチのモットーだし！" },
+            { k: "躍進", r: "やくしん", c: "あのブランド、最近の〇〇っぷりマジでエグい。" },
+            { k: "落胆", r: "らくたん", c: "お目当ての服が売り切れで、マジ〇〇したわ。" },
+            { k: "濫用", r: "らんよう", c: "「それな」の〇〇、会話のIQ下がりそうで草。" },
+            { k: "理不尽", r: "りふじん", c: "校則が〇〇すぎて、マジで納得いかない。" },
+            { k: "凌駕", r: "りょうが", c: "今年の夏は、過去最高を〇〇する楽しさにしよ！" },
+            { k: "歴然", r: "れきぜん", c: "プロのメイクとウチのメイク、差が〇〇すぎてワロタ。" },
+            { k: "露呈", r: "ろてい", c: "嘘の言い訳を突き詰められて、ボロが〇〇した。" },
+            { k: "歪曲", r: "わいきょく", c: "話を〇〇して伝えるの、マジでタチ悪いから！" },
+            { k: "隠蔽", r: "いんぺい", c: "テストの点数悪いのを親に〇〇しようとしたらバレた。" },
+            { k: "英断", r: "えいだん", c: "あのクズ男と別れたの、人生最大の〇〇だわ。" },
+            { k: "応酬", r: "おうしゅう", c: "リプ欄でのバトルの〇〇、見てるだけでおもろい。" },
+            { k: "割愛", r: "かつあい", c: "長くなるから、ここからの話は〇〇しまーす！" },
+            { k: "毅然", r: "きぜん", c: "ナンパされても〇〇とした態度でスルーする。 " },
+            { k: "詭弁", r: "きべん", c: "あいつの言ってること、一見正しそうだけどただの〇〇。" },
+            { k: "驚異", r: "きょうい", c: "あのスタイルの良さ、マジで〇〇的で憧れる。" },
+            { k: "共謀", r: "きょうぼう", c: "友達と〇〇して、サプライズ大成功させた！" },
+            { k: "極致", r: "きょくち", c: "このワンピのデザイン、可愛さの〇〇でしょ。" },
+            { k: "愚行", r: "ぐこう", c: "深夜に元カレに電話するとか、マジで〇〇の極み。" },
+            { k: "傾聴", r: "けいちょう", c: "友達の恋バナは一晩中〇〇するスタイル。" },
+            { k: "形骸", r: "けいがい", c: "あのルール、もう誰も守ってなくて〇〇化してる。" },
+            { k: "軽減", r: "けいげん", c: "前髪作ったら、面長コンプレックスが〇〇された！" },
+            { k: "軽蔑", r: "けいべつ", c: "ポイ捨てする人、マジで〇〇しちゃうわー。" },
+            { k: "懸念", r: "けねん", c: "明日雨だと髪の巻きが取れるのが一番の〇〇。" },
+            { k: "迎合", r: "げいごう", c: "みんなの意見に〇〇ばっかりしてたら自分がなくなる。" },
+            { k: "隙間", r: "すきま", c: "予定の〇〇時間でサクッと自撮り盛る。" },
+            { k: "酷評", r: "こくひょう", c: "話題のコスメ、ネットで〇〇されてて買うのやめた。" },
+            { k: "誤算", r: "ごさん", c: "雨降るなんてマジで〇〇、傘持ってないし。" },
+            { k: "誇示", r: "こじ", c: "SNSでハイブラ爆買いを〇示するの、ちょっとウケる。" },
+            { k: "姑息", r: "こそく", c: "カンニングしよとするの、〇〇な手段すぎてダサい。" },
+            { k: "固辞", r: "こじ", c: "サークルの代表を頼まれたけど、マジで〇〇した。" },
+            { k: "互角", r: "ごかく", c: "あの子とウチ、かわいさ〇〇ってことでどう？笑" },
+            { k: "固結", r: "こけつ", c: "みんなの団結力が〇〇して、文化祭まじ大成功！" },
+            { k: "孤独", r: "こどく", c: "夜中に1人で部屋にいると急に〇〇感おそってくる。" },
+            { k: "混沌", r: "こんとん", c: "ウチの部屋のクローゼット、〇〇としすぎてヤバい。" },
+            { k: "些細", r: "ささい", c: "〇〇なすれ違いで大喧嘩するの、カップルあるある。" },
+            { k: "打破", r: "だは", c: "今のウチに必要なのは、この現状を〇〇する行動力！" },
+            { k: "安価", r: "あんか", c: "プチプラなのに優秀で〇〇なコスメ、マジ最高。" },
+            { k: "逸品", r: "いっぴん", c: "このリップ、発色良すぎてマジで今季の〇〇！" },
+            { k: "威風", r: "いふう", c: "カリスマ先輩の〇〇堂々とした歩き方、憧れる。" },
+            { k: "会得", r: "えとく", c: "自撮りが絶対に盛れる角度を〇得した！" },
+            { k: "閲覧", r: "えつらん", c: "元カレのストーリーを〇〇するの、やめられない。" },
+            { k: "応急", r: "おうきゅう", c: "爪割れたからトップコートで〇〇処置した！" },
+            { k: "謳歌", r: "おうか", c: "ウチらの青春、今しかねーからマジで〇〇しよ！" },
+            { k: "精算", r: "せいさん", c: "昨日の飲み会代、あとで〇〇しといてねー！" },
+            { k: "加味", r: "かみ", c: "みんなの都合を〇〇して、遊ぶ日程決めよう！" },
+            { k: "乾操", r: "かんそう", c: "冬の肌、〇〇しすぎてメイクのり最悪で萎え。" },
+            { k: "甘美", r: "かんび", c: "あいつの〇〇な誘惑に、また騙されそうになる。" },
+            { k: "完璧", r: "かんぺき", c: "このコーデ、今日の気分に〇〇にマッチしてる！" },
+            { k: "甘露", r: "かんろ", c: "タピオカミルクティー、ウチにとって〇〇の味。" },
+            { k: "気概", r: "きがい", c: "絶対にあいつを見返す！っていう〇〇で生きてる。" }
+        ];
+
+        // アプリの状態
+        let appState = {
+            wrongWords: {}, // 単語帳データ {kanji: wrong_count}
+            currentMode: 'normal',
+            currentQuizList: [],
+            currentIndex: 0,
+            currentWord: null
+        };
+
+        // ローカルストレージからデータ読み込み
+        function loadData() {
+            const saved = localStorage.getItem('gal_kanji_wrong_words');
+            if (saved) {
+                try {
+                    appState.wrongWords = JSON.parse(saved);
+                } catch(e) {
+                    appState.wrongWords = {};
+                }
+            }
+            updateHomeStats();
+        }
+
+        // データを保存
+        function saveData() {
+            localStorage.setItem('gal_kanji_wrong_words', JSON.stringify(appState.wrongWords));
+            updateHomeStats();
+        }
+
+        // ホームの統計更新
+        function updateHomeStats() {
+            const count = Object.keys(appState.wrongWords).length;
+            document.getElementById('home-total-count').innerText = count;
+        }
+
+        // 画面切り替え
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            document.getElementById('result-overlay').style.display = 'none';
+        }
+
+        function goHome() {
+            switchScreen('screen-home');
+            updateHomeStats();
+        }
+
+        // クイズ開始
+        function startQuiz(mode) {
+            appState.currentMode = mode;
+            appState.currentIndex = 0;
+            
+            if (mode === 'normal') {
+                document.getElementById('quiz-title').innerText = "ガチ勝負！通常クイズ";
+                // ランダムに10問選ぶ
+                let shuffled = [...kanjiDataset].sort(() => 0.5 - Math.random());
+                appState.currentQuizList = shuffled.slice(0, 10);
+            } else {
+                document.getElementById('quiz-title').innerText = "苦手克服🔥リベンジクイズ";
+                // 登録されている苦手な単語から選ぶ
+                const wrongKeys = Object.keys(appState.wrongWords);
+                if (wrongKeys.length === 0) {
+                    alert("あんにゃまる、まだ間違えた漢字がないよ！通常クイズで遊んでみてね😘");
+                    return;
+                }
+                
+                // 苦手な単語のオブジェクトをデータセットから復元
+                let list = [];
+                wrongKeys.forEach(k => {
+                    const found = kanjiDataset.find(d => d.k === k);
+                    if (found) list.push(found);
+                });
+                
+                appState.currentQuizList = list.sort(() => 0.5 - Math.random());
+            }
+
+            switchScreen('screen-quiz');
+            showQuestion();
+        }
+
+        // 問題表示
+        function showQuestion() {
+            document.getElementById('quiz-loading').style.display = 'none';
+            document.getElementById('quiz-content').style.display = 'block';
+            document.getElementById('answer-input').value = '';
+            document.getElementById('result-overlay').style.display = 'none';
+            
+            if (appState.currentIndex >= appState.currentQuizList.length) {
+                // クイズ終了
+                alert("クイズ終了ーーー！！お疲れ、あんにゃまる！マジ最高だったよ✨");
+                goHome();
                 return;
             }
-            quizQueue = wrongWords.map(idx => allQuestions[idx]).sort(() => Math.random() - 0.5);
-        }
 
-        switchScreen('quiz-screen');
-        showQuestion();
-    }
-
-    function showQuestion() {
-        if (currentQuestionIndex >= quizQueue.length) {
-            alert(currentQuizMode === 'normal' ? 'クイズおつかれ！単語帳チェックしてみてね✨' : 'リベンジクイズやりきった！マジ天才！👏');
-            switchScreen('home-screen');
-            return;
-        }
-
-        const q = quizQueue[currentQuestionIndex];
-        document.getElementById('progress-label').innerText = `${currentQuestionIndex + 1}/${quizQueue.length}`;
-        document.getElementById('quiz-kanji').innerText = q.kanji;
-
-        const optionsContainer = document.getElementById('options-container');
-        optionsContainer.innerHTML = '';
-
-        const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
-
-        shuffledOptions.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerText = opt;
-            btn.onclick = () => checkAnswer(opt, q);
-            optionsContainer.appendChild(btn);
-        });
-    }
-
-    function checkAnswer(selected, question) {
-        const isCorrect = (selected === question.correct);
-        const feedbackLayer = document.getElementById('feedback-layer');
-        const statusEl = document.getElementById('feedback-status');
-
-        if (isCorrect) {
-            statusEl.innerText = "それな！大正解✨";
-            statusEl.className = "feedback-title correct";
-        } else {
-            statusEl.innerText = "あーね！伸びしろしか勝たん！";
-            statusEl.className = "feedback-title wrong";
+            appState.currentWord = appState.currentQuizList[appState.currentIndex];
             
-            const originalIndex = allQuestions.findIndex(q => q.kanji === question.kanji);
-            if (originalIndex !== -1 && !wrongWords.includes(originalIndex)) {
-                wrongWords.push(originalIndex);
-            }
-        }
-
-        document.getElementById('fb-reading').innerText = question.correct;
-        document.getElementById('fb-meaning').innerText = question.meaning;
-        document.getElementById('fb-usage').innerText = question.usage;
-
-        feedbackLayer.style.display = 'flex';
-    }
-
-    function nextQuestion() {
-        document.getElementById('feedback-layer').style.display = 'none';
-        currentQuestionIndex++;
-        showQuestion();
-    }
-</script>
-
-</body>
-</html>
+            document.getElementById('q-context').innerText = appState.currentWord.c;
+            document.getElementById('q-kanji').innerText = appState.cur
