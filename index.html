@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>漢字爆アゲ単語帳</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://imgur.com/G5YgR5G.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://imgur.com/G5YgR5G.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://imgur.com/G5YgR5G.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="漢字爆アゲ">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         :root {
             --bg-color: #121212;
@@ -204,7 +210,7 @@
             { k: "応酬", r: "おうしゅう", c: "リプ欄でのバトルの〇〇、見てるだけでおもろい。" },
             { k: "割愛", r: "かつあい", c: "長くなるから、ここからの話は〇〇しまーす！" },
             { k: "毅然", r: "きぜん", c: "ナンパされても〇〇とした態度でスルーする。 " },
-            { k: "詭弁", r: "きべん", c: "あいつの言ってること、一見正しそうだけどただの〇〇。" },
+            { k: "诡弁", r: "きべん", c: "あいつの言ってること、一見正しそうだけどただの〇〇。" },
             { k: "驚異", r: "きょうい", c: "あのスタイルの良さ、マジで〇〇的で憧れる。" },
             { k: "共謀", r: "きょうぼう", c: "友達と〇〇して、サプライズ大成功させた！" },
             { k: "極致", r: "きょくち", c: "このワンピのデザイン、可愛さの〇〇でしょ。" },
@@ -236,7 +242,7 @@
             { k: "謳歌", r: "おうか", c: "ウチらの青春、今しかねーからマジで〇〇しよ！" },
             { k: "精算", r: "せいさん", c: "昨日の飲み会代、あとで〇〇しといてねー！" },
             { k: "加味", r: "かみ", c: "みんなの都合を〇〇して、遊ぶ日程決めよう！" },
-            { k: "乾操", r: "かんそう", c: "冬の肌、〇〇しすぎてメイクのり最悪で萎え。" },
+            { k: "乾燥", r: "かんそう", c: "冬の肌、〇〇しすぎてメイクのり最悪で萎え。" },
             { k: "甘美", r: "かんび", c: "あいつの〇〇な誘惑に、また騙されそうになる。" },
             { k: "完璧", r: "かんぺき", c: "このコーデ、今日の気分に〇〇にマッチしてる！" },
             { k: "甘露", r: "かんろ", c: "タピオカミルクティー、ウチにとって〇〇の味。" },
@@ -296,47 +302,3 @@
             
             if (mode === 'normal') {
                 document.getElementById('quiz-title').innerText = "ガチ勝負！通常クイズ";
-                // ランダムに10問選ぶ
-                let shuffled = [...kanjiDataset].sort(() => 0.5 - Math.random());
-                appState.currentQuizList = shuffled.slice(0, 10);
-            } else {
-                document.getElementById('quiz-title').innerText = "苦手克服🔥リベンジクイズ";
-                // 登録されている苦手な単語から選ぶ
-                const wrongKeys = Object.keys(appState.wrongWords);
-                if (wrongKeys.length === 0) {
-                    alert("あんにゃまる、まだ間違えた漢字がないよ！通常クイズで遊んでみてね😘");
-                    return;
-                }
-                
-                // 苦手な単語のオブジェクトをデータセットから復元
-                let list = [];
-                wrongKeys.forEach(k => {
-                    const found = kanjiDataset.find(d => d.k === k);
-                    if (found) list.push(found);
-                });
-                
-                appState.currentQuizList = list.sort(() => 0.5 - Math.random());
-            }
-
-            switchScreen('screen-quiz');
-            showQuestion();
-        }
-
-        // 問題表示
-        function showQuestion() {
-            document.getElementById('quiz-loading').style.display = 'none';
-            document.getElementById('quiz-content').style.display = 'block';
-            document.getElementById('answer-input').value = '';
-            document.getElementById('result-overlay').style.display = 'none';
-            
-            if (appState.currentIndex >= appState.currentQuizList.length) {
-                // クイズ終了
-                alert("クイズ終了ーーー！！お疲れ、あんにゃまる！マジ最高だったよ✨");
-                goHome();
-                return;
-            }
-
-            appState.currentWord = appState.currentQuizList[appState.currentIndex];
-            
-            document.getElementById('q-context').innerText = appState.currentWord.c;
-            document.getElementById('q-kanji').innerText = appState.cur
